@@ -38,7 +38,6 @@
             padding-bottom: 60px;
         }
 
-        /* شريط علوي */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -67,7 +66,6 @@
             cursor: pointer;
         }
 
-        /* تصميم البطاقات المنهجية */
         .lesson-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -88,7 +86,6 @@
             padding-bottom: 10px;
         }
 
-        /* نصوص الدروس التمهيدية */
         .lesson-text-box {
             background: #fdfbf7;
             border: 1px solid #ffe0b2;
@@ -118,7 +115,6 @@
             gap: 6px;
         }
 
-        /* عناصر التفاعل */
         .tf-btn, .drag-word {
             background: #ffffff;
             border: 2px solid #b0bec5;
@@ -159,7 +155,6 @@
             font-weight: bold;
         }
 
-        /* عناصر مربع الاختيار المنهجي */
         .check-item-row {
             display: flex;
             align-items: center;
@@ -191,7 +186,6 @@
             flex-shrink: 0;
         }
 
-        /* الفراغات والجداول */
         .drop-zone {
             display: inline-block;
             min-width: 90px;
@@ -227,7 +221,6 @@
             font-weight: 800;
         }
 
-        /* قسم التلوين */
         .color-palette {
             display: flex;
             justify-content: center;
@@ -255,7 +248,6 @@
         .color-orange { background: #ff9800; }
         .color-choice-wrap.selected .color-btn { border-color: #212121; transform: scale(1.15); }
 
-        /* التقييمات الجزئية */
         .eval-badge {
             background: #f1f8e9;
             border: 1px solid #dcedc8;
@@ -270,7 +262,6 @@
         .text-success { color: var(--success); }
         .text-error { color: var(--error); }
 
-        /* بنك الكلمات المبعثرة */
         .word-pool {
             background: #f8fafc;
             border: 1.5px dashed #b0bec5;
@@ -280,13 +271,21 @@
             text-align: center;
         }
 
-        .media-player {
-            width: 100%;
-            margin: 10px 0;
-            border-radius: 8px;
+        .audio-wrapper {
+            background: #e3f2fd;
+            padding: 14px;
+            border-radius: 12px;
+            margin: 10px 0 15px 0;
+            border: 1px solid #90caf9;
+            text-align: center;
         }
 
-        /* التقرير النهائي الشامل */
+        .media-player {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 6px;
+        }
+
         #final-report {
             text-align: center;
             background: #ffffff;
@@ -549,11 +548,17 @@
             <strong>أَلْهَاكُمُ التَّكَاثُرُ ﴿1﴾ حَتَّىٰ زُرْتُمُ الْمَقَابِرَ ﴿2﴾ كَلَّا سَوْفَ تَعْلَمُونَ ﴿3﴾ ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ ﴿4﴾ كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ ﴿5﴾ لَتَرَوُنَّ الْجَحِيمَ ﴿6﴾ ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ ﴿7﴾ ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ ﴿8﴾</strong>[cite: 19]
         </div>
         
-        <p class="instruction">🎧 اسْتَمِعْ إِلَى تِلَاوَةِ السُّورَةِ بِصَوْتِ طِفْلٍ :</p>
-        <audio controls class="media-player">
-            <source src="https://server7.mp3quran.net/tjnd/102.mp3" type="audio/mpeg">
-            متصفحك لا يدعم مشغل الصوت.
-        </audio>
+        <p class="instruction">🎧 اسْتَمِعْ إِلَى تِلَاوَةِ السُّورَةِ :</p>
+        <div class="audio-wrapper">
+            <audio id="audio-takathur" controls class="media-player" preload="metadata">
+                <!-- المحاولة 1: ملف محلي بالمستودع -->
+                <source src="takathur.mp3" type="audio/mpeg">
+                <!-- المحاولة 2: سيرفر إسلامي مباشر ومفتوح (EveryAyah/Archive) -->
+                <source src="https://server7.mp3quran.net/s_gmd/102.mp3" type="audio/mpeg">
+                <source src="https://media.blubrry.com/muslim_central_quran/podcasts.qurancentral.com/mishary-rashid-alafasy/mishary-rashid-alafasy-102.mp3" type="audio/mpeg">
+                متصفحك لا يدعم مشغل الصوت.
+            </audio>
+        </div>
 
         <p class="instruction">أَتَعَرَّفُ عَلَى مَعَانِي الْمُفْرَدَاتِ :</p>
         <div class="word-pool" id="pool-4-1"></div>
@@ -588,10 +593,16 @@
         </div>
 
         <p class="instruction">📢 اسْتَمِعْ إِلَى صَوْتِ الْأَذَانِ :</p>
-        <audio controls class="media-player">
-            <source src="https://download.quranicaudio.com/adhan/adhan_makkah.mp3" type="audio/mpeg">
-            متصفحك لا يدعم مشغل الصوت.
-        </audio>
+        <div class="audio-wrapper">
+            <audio id="audio-adhan" controls class="media-player" preload="metadata">
+                <!-- المحاولة 1: ملف محلي بالمستودع -->
+                <source src="adhan.mp3" type="audio/mpeg">
+                <!-- المحاولة 2: خادم Archive المفتوح للأذان -->
+                <source src="https://ia800203.us.archive.org/14/items/Mp3CollectionAdzan/Adzan%20Madinah%20by%20Esam%20Bokhari.mp3" type="audio/mpeg">
+                <source src="https://ia800702.us.archive.org/1/items/AdhanNotifications/Adhan.mp3" type="audio/mpeg">
+                متصفحك لا يدعم مشغل الصوت.
+            </audio>
+        </div>
 
         <p class="instruction">أنشطة التعلم : أَخْتَارُ الْجَوَابَ الصَّحِيحَ :</p>
         <div id="ex5-1"></div>
@@ -810,7 +821,6 @@
             
             const btnGroup = document.createElement('div');
 
-            // ترتيب موحد وثابت: "صحيح" دائماً الأول و "خطأ" دائماً الثاني
             const fixedOptions = [
                 { label: "صحيح", isUserChoosingTrue: true },
                 { label: "خطأ", isUserChoosingTrue: false }
@@ -825,7 +835,6 @@
                     playTap();
                     Array.from(btnGroup.querySelectorAll('.tf-btn')).forEach(b => b.classList.add('locked'));
 
-                    // إذا كان اختيار الطفل مطابقاً لقيمة الصحة المطلوبة
                     const isCorrect = (opt.isUserChoosingTrue === q.isCorrectAnswer);
 
                     if (isCorrect) {
@@ -1157,7 +1166,6 @@
             { label: "نَهَانَا", val: "نَهَانَا" }
         ]);
 
-        // خيارات متعددة مبعثرة عشوائياً لعدم وجود "صحيح/خطأ"
         buildRandomizedMCQ('ex2-2', [
             { text: "الإِيمَانُ بِاللَّهِ :", options: [{label: "مِنْ أَرْكَانِ الْإِسْلَامِ", correct: false}, {label: "مِنْ أَرْكَانِ الْإِيمَانِ", correct: true}] },
             { text: "يَزِيدُ الْإِيمَانُ بِـ :", options: [{label: "طَاعَةِ اللَّهِ", correct: true}, {label: "الْأَقْوَالِ فَقَط", correct: false}] }
@@ -1195,7 +1203,6 @@
             { label: "نَوَاهِيهِ", val: "نَوَاهِيهِ" }
         ]);
 
-        // الدرس 3: تمرين صحيح/خطأ موحد ومثبت الترتيب (صحيح أولاً ثم خطأ)
         buildFixedTrueFalse('ex3-3', [
             { text: "لَا أَقْرَأُ الْقُرْآنَ لِأَنَّنِي صَغِيرٌ.", isCorrectAnswer: false },
             { text: "أَقْرَأُ الْقُرْآنَ وَأَحْفَظُهُ.", isCorrectAnswer: true },
