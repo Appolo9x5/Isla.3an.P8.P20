@@ -38,6 +38,85 @@
             padding-bottom: 60px;
         }
 
+        /* نافذة القفل والاشتراك الإجباري */
+        #sub-lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .lock-box {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 25px rgba(2, 136, 209, 0.15);
+            border: 2px solid #e1f5fe;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .lock-icon {
+            font-size: 50px;
+            margin-bottom: 12px;
+        }
+
+        .lock-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .lock-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .btn-channel {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px;
+            font-weight: 800;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(2, 136, 209, 0.3);
+        }
+
+        .btn-check-sub {
+            width: 100%;
+            background: #e8f5e9;
+            color: var(--success);
+            border: 2px solid var(--success);
+            padding: 13px;
+            font-weight: 800;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            cursor: pointer;
+        }
+
+        .sub-status-msg {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            min-height: 24px;
+        }
+
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -338,6 +417,20 @@
 </head>
 <body>
 
+    <!-- نافذة قفل الاشتراك الإجباري -->
+    <div id="sub-lock-screen">
+        <div class="lock-box">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-title">اشْتِرَاكٌ إِجْبَارِيٌّ</div>
+            <div class="lock-desc">
+                لِفَتْحِ الدَّرْسِ وَمُتَابَعَةِ الْأَنْشِطَةِ التَّفَاعُلِيَّةِ، يُرْجَى الِانْضِمَامُ إِلَى قَنَاتِنَا أَوَّلًا ثُمَّ الضَّغْطُ عَلَى تَأْكِيدِ الِاشْتِرَاكِ.
+            </div>
+            <a href="https://t.me/c/3910412986" target="_blank" class="btn-channel" id="channel-link">📢 الِانْضِمَامُ إِلَى الْقَنَاةِ</a>
+            <button class="btn-check-sub" onclick="verifySubscription()">✅ تَأْكِيدُ الِاشْتِرَاكِ</button>
+            <div id="sub-status-msg" class="sub-status-msg"></div>
+        </div>
+    </div>
+
     <div class="top-bar">
         <span class="app-title-mini">التربية الإسلامية • السنة الثالثة ابتدائي</span>
         <button class="audio-btn" id="audio-toggle" onclick="toggleAudio()" title="كتم/تشغيل الصوت">🔊</button>
@@ -349,8 +442,8 @@
         
         <div class="lesson-text-box">
             <span class="lesson-text-title">📖 أَقْرَأُ وَأَتَذَكَّرُ :</span>
-            قَالَ رَسُولُ اللَّهِ ﷺ : <strong>«الإِسْلَامُ أَنْ تَشْهَدَ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ ، وَتُقِيمَ الصَّلَاةَ ، وَتُؤْتِي الزَّكَاةَ ، وَتَصُومَ رَمَضَانَ، وَتَحُجَّ الْبَيْتَ إِنِ اسْتَطَعْتَ إِلَيْهِ سَبِيلًا»</strong> [حديث شريف][cite: 19].<br><br>
-            وَقَالَ ﷺ لَمَّا سُئِلَ عَنِ الْإِيمَانِ : <strong>«الإِيمَانُ أَنْ تُؤْمِنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ وَالْيَوْمِ الآخِرِ ، وَتُؤْمِنَ بِالْقَدَرِ خَيْرِهِ وَشَرِّهِ»</strong> [حديث شريف][cite: 19].
+            قَالَ رَسُولُ اللَّهِ ﷺ : <strong>«الإِسْلَامُ أَنْ تَشْهَدَ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ ، وَتُقِيمَ الصَّلَاةَ ، وَتُؤْتِي الزَّكَاةَ ، وَتَصُومَ رَمَضَانَ، وَتَحُجَّ الْبَيْتَ إِنِ اسْتَطَعْتَ إِلَيْهِ سَبِيلًا»</strong> [حديث شريف].<br><br>
+            وَقَالَ ﷺ لَمَّا سُئِلَ عَنِ الْإِيمَانِ : <strong>«الإِيمَانُ أَنْ تُؤْمِنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ وَالْيَوْمِ الآخِرِ ، وَتُؤْمِنَ بِالْقَدَرِ خَيْرِهِ وَشَرِّهِ»</strong> [حديث شريف].
         </div>
 
         <p class="instruction">أنشطة التعلم : أَخْتَارُ الْعِبَارَاتِ الصَّحِيحَةَ :</p>
@@ -436,14 +529,14 @@
         
         <div class="lesson-text-box">
             <span class="lesson-text-title">📖 أَقْرَأُ الْقِصَّةَ :</span>
-            جَلَسَتْ خَدِيجَةُ ذَاتَ لَيْلَةٍ أَمَامَ النَّافِذَةِ تَتَأَمَّلُ النُّجُومَ الْمُضِيئَةَ فِي السَّمَاءِ، وَبَعْضَ السُّحُبِ الَّتِي تُحَرِّكُهَا الرِّيَاحُ الْهَادِئَةُ، تَارَةً تُغَطِّي الْقَمَرَ، وَتَارَةً أُخْرَى تَنْسَحِبُ عَنْهُ فِي هُدُوءٍ[cite: 19]. فَقَالَتْ لِأُمِّهَا: يَا أُمِّي، مَنِ الَّذِي يُمْسِكُ النُّجُومَ فِي السَّمَاءِ حَتَّى لَا تَقَعَ عَلَى الْأَرْضِ؟ وَيُحَرِّكُ السَّحَابَ؟ وَيَأْتِي بِاللَّيْلِ بَعْدَ النَّهَارِ؟[cite: 19]<br>
-            فَأَجَابَتْهَا: إِنَّهُ <strong>اللهُ، خَالِقُ الْأَرْضِ وَالسَّمَاءِ وَمَا فِيهِمَا</strong>، وَكُلُّ شَيْءٍ فِي هَذَا الْكَوْنِ الْوَاسِعِ لَا يَتَحَرَّكُ إِلَّا بِإِذْنِهِ[cite: 19]. فَقَالَتْ خَدِيجَةُ: <strong>سُبْحَانَ اللهِ الَّذِي أَحْسَنَ كُلَّ شَيْءٍ خَلَقَهُ</strong>[cite: 19].
+            جَلَسَتْ خَدِيجَةُ ذَاتَ لَيْلَةٍ أَمَامَ النَّافِذَةِ تَتَأَمَّلُ النُّجُومَ الْمُضِيئَةَ فِي السَّمَاءِ، وَبَعْضَ السُّحُبِ الَّتِي تُحَرِّكُهَا الرِّيَاحُ الْهَادِئَةُ، تَارَةً تُغَطِّي الْقَمَرَ، وَتَارَةً أُخْرَى تَنْسَحِبُ عَنْهُ فِي هُدُوءٍ. فَقَالَتْ لِأُمِّهَا: يَا أُمِّي، مَنِ الَّذِي يُمْسِكُ النُّجُومَ فِي السَّمَاءِ حَتَّى لَا تَقَعَ عَلَى الْأَرْضِ؟ وَيُحَرِّكُ السَّحَابَ؟ وَيَأْتِي بِاللَّيْلِ بَعْدَ النَّهَارِ؟<br>
+            فَأَجَابَتْهَا: إِنَّهُ <strong>اللهُ، خَالِقُ الْأَرْضِ وَالسَّمَاءِ وَمَا فِيهِمَا</strong>، وَكُلُّ شَيْءٍ فِي هَذَا الْكَوْنِ الْوَاسِعِ لَا يَتَحَرَّكُ إِلَّا بِإِذْنِهِ. فَقَالَتْ خَدِيجَةُ: <strong>سُبْحَانَ اللهِ الَّذِي أَحْسَنَ كُلَّ شَيْءٍ خَلَقَهُ</strong>.
         </div>
 
         <p class="instruction">أنشطة التعلم : أَمْلَأُ الْفَرَاغَاتِ بِالْكَلِمَاتِ التَّالِيَةِ :</p>
         <div class="word-pool" id="pool-2-1"></div>
         <p style="line-height: 2.5; font-size:1.05rem;">
-            الْإِيمَانُ بِاللَّهِ رُكْنٌ مِنْ <span class="drop-zone" data-ans="أَرْكَانِ"></span> الْإِيمَانِ السِّتَّةِ، وَهُوَ أَنْ نُؤْمِنَ بِأَنَّ اللَّهَ تَعَالَى <span class="drop-zone" data-ans="خَالِقُ"></span> كُلِّ شَيْءٍ، فَيَجِبُ عَلَيْنَا <span class="drop-zone" data-ans="طَاعَتُهُ"></span> فِيمَا أَمَرَنَا بِهِ وَمَا <span class="drop-zone" data-ans="نَهَانَا"></span> عَنْهُ[cite: 19].
+            الْإِيمَانُ بِاللَّهِ رُكْنٌ مِنْ <span class="drop-zone" data-ans="أَرْكَانِ"></span> الْإِيمَانِ السِّتَّةِ، وَهُوَ أَنْ نُؤْمِنَ بِأَنَّ اللَّهَ تَعَالَى <span class="drop-zone" data-ans="خَالِقُ"></span> كُلِّ شَيْءٍ، فَيَجِبُ عَلَيْنَا <span class="drop-zone" data-ans="طَاعَتُهُ"></span> فِيمَا أَمَرَنَا بِهِ وَمَا <span class="drop-zone" data-ans="نَهَانَا"></span> عَنْهُ.
         </p>
         <div class="eval-badge">
             <span class="text-success">صحيحة: <span id="ex2-1-c">0</span></span>
@@ -490,9 +583,9 @@
         
         <div class="lesson-text-box">
             <span class="lesson-text-title">📖 أَقْرَأُ الْحِوَارَ :</span>
-            قَالَتْ خَدِيجَةُ لِصَدِيقَتِهَا نُهَى: مُبَارَكٌ عَلَيْكِ يَا عَزِيزَتِي حِفْظُكِ لِلْقُرْآنِ الْكَرِيمِ، لَقَدْ أَصْبَحْتِ الأَفْضَلَ عِنْدَ اللهِ تعالى وَعِنْدَ النَّاسِ[cite: 19].<br>
-            فَأَجَابَتْهَا نُهَى: صَحِيحٌ، وَلَكِنْ مَا زَالَ عَلَيَّ أَنْ أُدَاوِمَ عَلَى قِرَاءَتِهِ حَتَّى لَا أَنْسَاهُ؛ وَأَنْ أُعَلِّمَهُ لِغَيْرِي[cite: 19]. أَلَمْ تَقْرَئِي حَدِيثَ سَيِّدِنَا رَسُولِ اللَّهِ ﷺ الَّذِي يَدْعُونَا إِلَى تَعَلُّمِ الْقُرْآنِ وَتَعْلِيمِهِ؟[cite: 19]<br>
-            قَالَ رَسُولُ اللهِ ﷺ: <strong>«خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»</strong> [حديث شريف][cite: 19].
+            قَالَتْ خَدِيجَةُ لِصَدِيقَتِهَا نُهَى: مُبَارَكٌ عَلَيْكِ يَا عَزِيزَتِي حِفْظُكِ لِلْقُرْآنِ الْكَرِيمِ، لَقَدْ أَصْبَحْتِ الأَفْضَلَ عِنْدَ اللهِ تعالى وَعِنْدَ النَّاسِ.<br>
+            فَأَجَابَتْهَا نُهَى: صَحِيحٌ، وَلَكِنْ مَا زَالَ عَلَيَّ أَنْ أُدَاوِمَ عَلَى قِرَاءَتِهِ حَتَّى لَا أَنْسَاهُ؛ وَأَنْ أُعَلِّمَهُ لِغَيْرِي. أَلَمْ تَقْرَئِي حَدِيثَ سَيِّدِنَا رَسُولِ اللَّهِ ﷺ الَّذِي يَدْعُونَا إِلَى تَعَلُّمِ الْقُرْآنِ وَتَعْلِيمِهِ؟<br>
+            قَالَ رَسُولُ اللهِ ﷺ: <strong>«خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ»</strong> [حديث شريف].
         </div>
 
         <p class="instruction">أنشطة التعلم : أَخْتَارُ الْعِبَارَاتِ الَّتِي تُعَبِّرُ عَنْ وَاجِبَاتِي نَحْوَ الْقُرْآنِ، بِوَضْعِ عَلَامَة (☑) :</p>
@@ -507,9 +600,9 @@
         <p class="instruction">أَمْلَأُ الْفَرَاغَاتِ بِالْكَلِمَاتِ الْمُنَاسِبَةِ :</p>
         <div class="word-pool" id="pool-3-2"></div>
         <p style="line-height: 2.6; font-size:1.05rem;">
-            الْقُرْآنُ الْكَرِيمُ هُوَ الْكِتَابُ الَّذِي <span class="drop-zone" data-ans="أَنْزَلَهُ"></span> اللهُ تَعَالَى عَلَى نَبِيِّهِ <span class="drop-zone" data-ans="مُحَمَّدٍ"></span>[cite: 19].<br>
-            قِرَاءَةُ الْقُرْآنِ الْكَرِيمِ عِبَادَةٌ أَتَقَرَّبُ بِهَا إِلَى <span class="drop-zone" data-ans="اللَّهِ تَعَالَى"></span>[cite: 19].<br>
-            وَاجِبِي نَحْوَ الْقُرْآنِ الْكَرِيمِ هُوَ أَنْ أُطَبِّقَ <span class="drop-zone" data-ans="أَوَامِرَهُ"></span> وَأَجْتَنِبَ <span class="drop-zone" data-ans="نَوَاهِيهِ"></span>[cite: 19].
+            الْقُرْآنُ الْكَرِيمُ هُوَ الْكِتَابُ الَّذِي <span class="drop-zone" data-ans="أَنْزَلَهُ"></span> اللهُ تَعَالَى عَلَى نَبِيِّهِ <span class="drop-zone" data-ans="مُحَمَّدٍ"></span>.<br>
+            قِرَاءَةُ الْقُرْآنِ الْكَرِيمِ عِبَادَةٌ أَتَقَرَّبُ بِهَا إِلَى <span class="drop-zone" data-ans="اللَّهِ تَعَالَى"></span>.<br>
+            وَاجِبِي نَحْوَ الْقُرْآنِ الْكَرِيمِ هُوَ أَنْ أُطَبِّقَ <span class="drop-zone" data-ans="أَوَامِرَهُ"></span> وَأَجْتَنِبَ <span class="drop-zone" data-ans="نَوَاهِيهِ"></span>.
         </p>
         <div class="eval-badge">
             <span class="text-success">صحيحة: <span id="ex3-2-c">0</span></span>
@@ -530,7 +623,7 @@
         <p class="instruction">إِمْلأَ الفَرَاغَاتِ بِالعِبَارَاتِ المُنَاسِبَةِ :</p>
         <div class="word-pool" id="pool-3-4"></div>
         <p style="line-height: 2.6; font-size:1.05rem;">
-            الْقُرْآنُ الْكَرِيمُ كَلَامُ <span class="drop-zone" data-ans="الله تَعَالَى"></span> وَلِذَلِكَ فَأَنَا <span class="drop-zone" data-ans="أُحِبُّهُ"></span> حُبًّا شَدِيدًا، وَأُقَوِّي عَلَاقَتِي بِهِ بِـ <span class="drop-zone" data-ans="تِلَاوَتِهِ"></span> تَلاوَةً صَحِيحَةً وَ <span class="drop-zone" data-ans="الإِنْصَاتِ"></span> إِلَيْهِ عِنْدَمَا يُقْرَأُ، وَأَضَعُ <span class="drop-zone" data-ans="المُصْحَفَ"></span> الشَّرِيفَ فِي مَكَانٍ نَظِيفٍ[cite: 19].
+            الْقُرْآنُ الْكَرِيمُ كَلَامُ <span class="drop-zone" data-ans="الله تَعَالَى"></span> وَلِذَلِكَ فَأَنَا <span class="drop-zone" data-ans="أُحِبُّهُ"></span> حُبًّا شَدِيدًا، وَأُقَوِّي عَلَاقَتِي بِهِ بِـ <span class="drop-zone" data-ans="تِلَاوَتِهِ"></span> تَلاوَةً صَحِيحَةً وَ <span class="drop-zone" data-ans="الإِنْصَاتِ"></span> إِلَيْهِ عِنْدَمَا يُقْرَأُ، وَأَضَعُ <span class="drop-zone" data-ans="المُصْحَفَ"></span> الشَّرِيفَ فِي مَكَانٍ نَظِيفٍ.
         </p>
         <div class="eval-badge">
             <span class="text-success">صحيحة: <span id="ex3-4-c">0</span></span>
@@ -543,9 +636,9 @@
         <h2 class="lesson-title">سُورَةُ التَّكَاثُرِ</h2>
         
         <div class="lesson-text-box" style="text-align: center; background: #fffde7; border-color: #ffe082;">
-            <span class="lesson-text-title">سُورَةُ التَّكَاثُرِ مَكِّيَّةٌ وَآيَاتُهَا 8[cite: 19]</span>
+            <span class="lesson-text-title">سُورَةُ التَّكَاثُرِ مَكِّيَّةٌ وَآيَاتُهَا 8</span>
             بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ<br>
-            <strong>أَلْهَاكُمُ التَّكَاثُرُ ﴿1﴾ حَتَّىٰ زُرْتُمُ الْمَقَابِرَ ﴿2﴾ كَلَّا سَوْفَ تَعْلَمُونَ ﴿3﴾ ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ ﴿4﴾ كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ ﴿5﴾ لَتَرَوُنَّ الْجَحِيمَ ﴿6﴾ ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ ﴿7﴾ ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ ﴿8﴾</strong>[cite: 19]
+            <strong>أَلْهَاكُمُ التَّكَاثُرُ ﴿1﴾ حَتَّىٰ زُرْتُمُ الْمَقَابِرَ ﴿2﴾ كَلَّا سَوْفَ تَعْلَمُونَ ﴿3﴾ ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ ﴿4﴾ كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ ﴿5﴾ لَتَرَوُنَّ الْجَحِيمَ ﴿6﴾ ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ ﴿7﴾ ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ ﴿8﴾</strong>
         </div>
         
         <p class="instruction">🎧 اسْتَمِعْ إِلَى تِلَاوَةِ السُّورَةِ :</p>
@@ -564,11 +657,11 @@
                 <th>مَعْنَاهَا (اختر المعنى ثم اضغط هنا)</th>
             </tr>
             <tr>
-                <td><strong>التَّكَاثُرُ</strong>[cite: 19]</td>
+                <td><strong>التَّكَاثُرُ</strong></td>
                 <td><span class="drop-zone" data-ans="التَّكَاثُرُ" style="width: 90%;"></span></td>
             </tr>
             <tr>
-                <td><strong>عِلْمَ اليَقِينِ</strong>[cite: 19]</td>
+                <td><strong>عِلْمَ اليَقِينِ</strong></td>
                 <td><span class="drop-zone" data-ans="عِلْمَ اليَقِينِ" style="width: 90%;"></span></td>
             </tr>
         </table>
@@ -584,8 +677,8 @@
         
         <div class="lesson-text-box">
             <span class="lesson-text-title">📖 قِصَّةُ مَشْرُوعِيَّةِ الْأَذَانِ :</span>
-            كَانَ الْمُسْلِمُونَ يَجْتَمِعُونَ لِلصَّلَاةِ بِدُونِ أَذَانٍ، فَتَشَاوَرَ الرَّسُولُ ﷺ مَع أَصْحَابِهِ لِيَجْتَمِعَ النَّاسُ لِلصَّلَاةِ فِي وَقْتِهَا، فَاقْتَرَحَ بَعْضُهُمُ اسْتِعْمَالَ البُوقِ، وَاقْتَرَحَ آخَرُونَ الْجَرَسَ.. فَلَمْ يُعْجِبْ ذَلِكَ النَّبِيَّ ﷺ[cite: 19].<br>
-            وَكَانَ الصَّحَابِيُّ <strong>عَبْدُ اللَّهِ بْنُ زَيْدٍ</strong> قَدْ رَأَى فِي مَنَامِهِ رَجُلًا يُعَلِّمُهُ أَلْفَاظَ الْأَذَانِ، فَقَصَّهَا عَلَى النَّبِيِّ ﷺ، فَقَالَ لَهُ: <strong>«إِنَّهَا رُؤْيَا حَقٌّ إِنْ شَاءَ اللهُ. قُمْ فَعَلِّمْهَا لِبِلَالٍ»</strong>، فَأَذَّنَ بِهَا بِلَالٌ رَضِيَ اللَّهُ عَنْهُ[cite: 19].
+            كَانَ الْمُسْلِمُونَ يَجْتَمِعُونَ لِلصَّلَاةِ بِدُونِ أَذَانٍ، فَتَشَاوَرَ الرَّسُولُ ﷺ مَع أَصْحَابِهِ لِيَجْتَمِعَ النَّاسُ لِلصَّلَاةِ فِي وَقْتِهَا، فَاقْتَرَحَ بَعْضُهُمُ اسْتِعْمَالَ البُوقِ، وَاقْتَرَحَ آخَرُونَ الْجَرَسَ.. فَلَمْ يُعْجِبْ ذَلِكَ النَّبِيَّ ﷺ.<br>
+            وَكَانَ الصَّحَابِيُّ <strong>عَبْدُ اللَّهِ بْنُ زَيْدٍ</strong> قَدْ رَأَى فِي مَنَامِهِ رَجُلًا يُعَلِّمُهُ أَلْفَاظَ الْأَذَانِ، فَقَصَّهَا عَلَى النَّبِيِّ ﷺ، فَقَالَ لَهُ: <strong>«إِنَّهَا رُؤْيَا حَقٌّ إِنْ شَاءَ اللهُ. قُمْ فَعَلِّمْهَا لِبِلَالٍ»</strong>، فَأَذَّنَ بِهَا بِلَالٌ رَضِيَ اللَّهُ عَنْهُ.
         </div>
 
         <p class="instruction">📢 اسْتَمِعْ إِلَى صَوْتِ الْأَذَانِ :</p>
@@ -613,15 +706,15 @@
                 <th>مَا يُنَاسِبُهَا</th>
             </tr>
             <tr>
-                <td>الْأَذَانُ هُوَ الْإِعْلَامُ[cite: 19]</td>
+                <td>الْأَذَانُ هُوَ الْإِعْلَامُ</td>
                 <td><span class="drop-zone" data-ans="adhan" style="width: 90%;"></span></td>
             </tr>
             <tr>
-                <td>الْإِقَامَةُ هِيَ الْإِعْلَامُ[cite: 19]</td>
+                <td>الْإِقَامَةُ هِيَ الْإِعْلَامُ</td>
                 <td><span class="drop-zone" data-ans="iqama" style="width: 90%;"></span></td>
             </tr>
             <tr>
-                <td>أَقُولُ: لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ[cite: 19]</td>
+                <td>أَقُولُ: لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ</td>
                 <td><span class="drop-zone" data-ans="dua" style="width: 90%;"></span></td>
             </tr>
         </table>
@@ -668,11 +761,59 @@
     </div>
 
 <script>
+    // بيانات البوت والقناة للتحقق الإجباري
+    const BOT_TOKEN = "8674142855:AAFWpBa74_Yu6bLtg1vHKi5ueVGSYh-ABWE";
+    const CHANNEL_ID = "-1003910412986";
+
     // تهيئة Telegram WebApp
     const tg = window.Telegram?.WebApp;
     if(tg) {
         tg.ready();
         tg.expand();
+    }
+
+    // التحقق من الاشتراك الإجباري
+    async function verifySubscription() {
+        const statusMsg = document.getElementById('sub-status-msg');
+        statusMsg.style.color = "#0288d1";
+        statusMsg.textContent = "جَارٍ التَّحَقُّقُ مِنَ الِاشْتِرَاكِ...";
+
+        let userId = null;
+        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id;
+        }
+
+        if (!userId) {
+            statusMsg.style.color = "#e65100";
+            statusMsg.textContent = "يُرْجَى فَتْحُ التَّطْبِيقِ دَاخِلَ تِلْيِجْرَام لِلتَّحَقُّقِ.";
+            return;
+        }
+
+        try {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/getChatMember?chat_id=${CHANNEL_ID}&user_id=${userId}`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.ok && data.result) {
+                const status = data.result.status;
+                if (['creator', 'administrator', 'member'].includes(status)) {
+                    statusMsg.style.color = "#2e7d32";
+                    statusMsg.textContent = "تَمَّ التَّأَكُّدُ بِنَجَاحٍ! جَارٍ فَتْحُ الدَّرْسِ...";
+                    setTimeout(() => {
+                        document.getElementById('sub-lock-screen').style.display = 'none';
+                    }, 600);
+                } else {
+                    statusMsg.style.color = "#c62828";
+                    statusMsg.textContent = "لَمْ تَنْتَسِبْ إِلَى الْقَنَاةِ بَعْدُ، يُرْجَى الِانْضِمَامُ أَوَّلًا.";
+                }
+            } else {
+                statusMsg.style.color = "#c62828";
+                statusMsg.textContent = "تَعَذَّرَ التَّحَقُّقُ، تَأَكَّدْ أَنَّ الْبُوتَ مُشْرِفٌ فِي الْقَنَاةِ.";
+            }
+        } catch (error) {
+            statusMsg.style.color = "#c62828";
+            statusMsg.textContent = "حَدَثَ خَطَأٌ فِي الِاتِّصَالِ، حَاوِلْ مَرَّةً أُخْرَى.";
+        }
     }
 
     // إدارة الصوت بتقنية Web Audio API
@@ -1028,7 +1169,11 @@
             btn.style.margin = '6px';
 
             btn.onclick = () => {
-                if (btn.classList.contains('locked') || !currentColorSelection) return;
+                if (btn.classList.contains('locked')) return;
+                if (!currentColorSelection) {
+                    alert('يرجى اختيار لون من الأعلى أولاً (أخضر أو برتقالي)');
+                    return;
+                }
                 btn.classList.add('locked');
 
                 if (currentColorSelection === item.type) {
@@ -1128,6 +1273,9 @@
         totalCorrectAnswers = 0;
         totalWrongAnswers = 0;
         updateLiveReport();
+
+        // فحص تلقائي للاشتراك عند التشغيل
+        verifySubscription();
 
         // الدرس 1: أنشطة (صحيح/خطأ موحدة ومثبتة: صحيح أولاً ثم خطأ)
         buildFixedTrueFalse('ex1-1', [
